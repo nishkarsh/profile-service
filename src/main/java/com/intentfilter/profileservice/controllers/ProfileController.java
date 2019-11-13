@@ -29,8 +29,8 @@ public class ProfileController {
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Void> update(String id, Profile profile) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody Profile profile) {
         profile.setId(new ObjectId(id));
         service.update(profile);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
