@@ -21,10 +21,10 @@ public class Profile {
     private ObjectId id;
 
     @CreatedDate
-    protected Date createdAt;
+    private Date createdAt;
 
     @LastModifiedDate
-    protected Date updatedAt;
+    private Date updatedAt;
 
     @NotBlank
     @Size(max = 256)
@@ -62,7 +62,7 @@ public class Profile {
     private UUID locationId;
 
     @Version
-    protected long version;
+    private long version;
 
     public ObjectId getId() {
         return id;
