@@ -1,10 +1,9 @@
 package com.intentfilter.profileservice.repositories;
 
 import com.intentfilter.profileservice.models.Profile;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProfileRepository extends MongoRepository<Profile, ObjectId> {
+public interface ProfileRepository extends MongoRepository<Profile, String> {
 }

@@ -2,7 +2,6 @@ package com.intentfilter.profileservice.services;
 
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.repositories.ProfileRepository;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class ProfileService {
         logger.info("Updated profile with ID [{}]", profile.getId());
     }
 
-    public Optional<Profile> findById(ObjectId id) {
+    public Optional<Profile> findById(String id) {
         return repository.findById(id);
     }
 }

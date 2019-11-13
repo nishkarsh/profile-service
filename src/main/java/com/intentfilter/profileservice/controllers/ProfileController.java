@@ -2,7 +2,6 @@ package com.intentfilter.profileservice.controllers;
 
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.services.ProfileService;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ public class ProfileController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Profile> getProfile(@PathVariable("id") String profileId) {
-        return service.findById(new ObjectId(profileId))
+        return service.findById(profileId)
                 .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -31,7 +30,7 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody Profile profile) {
-        profile.setId(new ObjectId(id));
+        profile.setId(id);
         service.update(profile);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

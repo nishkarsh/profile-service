@@ -2,7 +2,6 @@ package com.intentfilter.profileservice.models;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Document(collection = "ps.profiles")
 public class Profile {
     @Id
-    private ObjectId id;
+    private String id;
 
     @CreatedDate
     private Date createdAt;
@@ -64,11 +63,11 @@ public class Profile {
     @Version
     private long version;
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

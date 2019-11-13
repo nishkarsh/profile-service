@@ -4,7 +4,6 @@ import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.services.ProfileService;
 import io.github.glytching.junit.extension.random.Random;
 import io.github.glytching.junit.extension.random.RandomBeansExtension;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -32,20 +31,20 @@ class ProfileControllerTest {
     private ArgumentCaptor<Profile> captor = ArgumentCaptor.forClass(Profile.class);
 
     @Test
-    void shouldGetProfile(@Random ObjectId profileId, @Random Profile persistedProfile) {
+    void shouldGetProfile(@Random String profileId, @Random Profile persistedProfile) {
         when(profileService.findById(profileId)).thenReturn(Optional.of(persistedProfile));
 
-        final var response = this.controller.getProfile(profileId.toHexString());
+        final var response = this.controller.getProfile(profileId);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(persistedProfile));
     }
 
     @Test
-    void shouldReturnNotFoundStatusWhenProfileDoesNotExist(@Random ObjectId profileId) {
+    void shouldReturnNotFoundStatusWhenProfileDoesNotExist(@Random String profileId) {
         when(this.profileService.findById(profileId)).thenReturn(Optional.empty());
 
-        final var response = this.controller.getProfile(profileId.toHexString());
+        final var response = this.controller.getProfile(profileId);
 
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
@@ -61,8 +60,8 @@ class ProfileControllerTest {
     }
 
     @Test
-    void shouldUpdateProfile(@Random Profile profile, @Random ObjectId id) {
-        final var response = this.controller.update(id.toHexString(), profile);
+    void shouldUpdateProfile(@Random Profile profile, @Random String id) {
+        final var response = this.controller.update(id, profile);
 
         assertThat(response.getStatusCode(), is(HttpStatus.NO_CONTENT));
         verify(profileService, times(1)).update(captor.capture());
