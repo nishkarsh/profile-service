@@ -5,10 +5,7 @@ import com.intentfilter.profileservice.services.ProfileService;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profile")
@@ -24,5 +21,18 @@ public class ProfileController {
         return service.findById(new ObjectId(profileId))
                 .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping
+    public ResponseEntity<Profile> create(Profile profile) {
+        final var createdProfile = service.create(profile);
+        return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> update(String id, Profile profile) {
+        profile.setId(new ObjectId(id));
+        service.update(profile);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

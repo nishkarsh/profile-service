@@ -7,6 +7,8 @@ import io.github.glytching.junit.extension.random.RandomBeansExtension;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,7 +18,7 @@ import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class, RandomBeansExtension.class})
 class ProfileControllerTest {
@@ -25,6 +27,9 @@ class ProfileControllerTest {
 
     @InjectMocks
     private ProfileController controller;
+
+    @Captor
+    private ArgumentCaptor<Profile> captor = ArgumentCaptor.forClass(Profile.class);
 
     @Test
     void shouldGetProfile(@Random ObjectId profileId, @Random Profile persistedProfile) {
@@ -43,5 +48,25 @@ class ProfileControllerTest {
         final var response = this.controller.getProfile(profileId.toHexString());
 
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    void shouldCreateProfile(@Random Profile profile, @Random Profile createdProfile) {
+        when(profileService.create(profile)).thenReturn(createdProfile);
+
+        final var responseEntity = controller.create(profile);
+
+        assertThat(createdProfile, is(responseEntity.getBody()));
+        verify(profileService, times(1)).create(profile);
+    }
+
+    @Test
+    void shouldUpdateProfile(@Random Profile profile, @Random ObjectId id) {
+        final var response = this.controller.update(id.toHexString(), profile);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.NO_CONTENT));
+        verify(profileService, times(1)).update(captor.capture());
+        Profile profileBeingUpdated = captor.getValue();
+        assertThat(profileBeingUpdated.getId(), is(id));
     }
 }
