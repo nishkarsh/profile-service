@@ -2,9 +2,12 @@ package com.intentfilter.profileservice.services;
 
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.repositories.ProfileRepository;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -30,5 +33,9 @@ public class ProfileService {
         repository.save(profile);
 
         logger.info("Updated profile with ID [{}]", profile.getId());
+    }
+
+    public Optional<Profile> findById(ObjectId id) {
+        return repository.findById(id);
     }
 }

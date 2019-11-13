@@ -10,8 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,5 +42,15 @@ class ProfileServiceTest {
         this.service.update(profile);
 
         verify(this.repository).save(profile);
+    }
+
+    @Test
+    void shouldGetProfileById(@Random Profile profile) {
+        when(this.repository.findById(profile.getId())).thenReturn(Optional.of(profile));
+
+        final var foundProfile = this.service.findById(profile.getId());
+
+        assertTrue(foundProfile.isPresent());
+        assertThat(foundProfile.get(), is(profile));
     }
 }
