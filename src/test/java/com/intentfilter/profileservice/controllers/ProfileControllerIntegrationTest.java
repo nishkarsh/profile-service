@@ -3,12 +3,10 @@ package com.intentfilter.profileservice.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.intentfilter.profileservice.models.Profile;
-import io.github.glytching.junit.extension.random.Random;
-import io.github.glytching.junit.extension.random.RandomBeansExtension;
+import com.intentfilter.profileservice.models.ProfileBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ExtendWith(RandomBeansExtension.class)
 class ProfileControllerIntegrationTest {
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -42,7 +39,8 @@ class ProfileControllerIntegrationTest {
     }
 
     @Test
-    void shouldCreateProfile(@Random Profile profile) throws Exception {
+    void shouldCreateProfile() throws Exception {
+        final var profile = ProfileBuilder.withDefaults().build();
         mockMvc.perform(post("/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(profile)))
@@ -54,7 +52,8 @@ class ProfileControllerIntegrationTest {
     }
 
     @Test
-    void shouldUpdateProfile(@Random Profile profile) throws Exception {
+    void shouldUpdateProfile() throws Exception {
+        final var profile = ProfileBuilder.withDefaults().build();
         MvcResult mvcResult = mockMvc.perform(post("/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(profile)))
@@ -77,8 +76,8 @@ class ProfileControllerIntegrationTest {
     }
 
     @Test
-    void shouldGetProfileById(@Random Profile profile, @Random String profileId) throws Exception {
-        profile.setId(profileId);
+    void shouldGetProfileById() throws Exception {
+        final var profile = ProfileBuilder.withDefaults().build();
         MvcResult mvcResult = mockMvc.perform(post("/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(profile)))
@@ -87,7 +86,7 @@ class ProfileControllerIntegrationTest {
 
         final var createdProfileJson = ((ObjectNode) objectMapper.readTree(mvcResult.getResponse().getContentAsString()));
 
-        MvcResult fetchedProfile = mockMvc.perform(get("/profile/" + profileId))
+        MvcResult fetchedProfile = mockMvc.perform(get("/profile/" + profile.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
 

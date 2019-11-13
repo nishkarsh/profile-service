@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,51 +18,76 @@ import java.util.UUID;
 @Document(collection = "ps.profiles")
 public class Profile {
     @Id
-    private String id;
+    String id;
 
     @CreatedDate
-    private Date createdAt;
+    Date createdAt;
 
     @LastModifiedDate
-    private Date updatedAt;
+    Date updatedAt;
 
     @NotBlank
     @Size(max = 256)
-    private String displayName;
+    String displayName;
 
     @NotBlank
     @Size(max = 256)
-    private String actualFullName;
+    String actualFullName;
 
-    private String profilePicturePath;
+    String profilePicturePath;
 
-    @NotBlank
-    private LocalDate birthday;
+    @NotNull
+    LocalDate birthday;
 
-    private UUID genderId;
+    UUID genderId;
 
-    private UUID ethnicityId;
+    UUID ethnicityId;
 
-    private UUID religionId;
+    UUID religionId;
 
-    private Double height;
+    Double height;
 
-    private UUID figureTypeId;
+    UUID figureTypeId;
 
-    @NotBlank
-    private UUID maritalStatusId;
+    @NotNull
+    UUID maritalStatusId;
 
     @Size(max = 256)
-    private String occupation;
+    String occupation;
 
     @Size(max = 5000)
-    private String aboutMe;
+    String aboutMe;
 
-    @NotBlank
-    private UUID locationId;
+    @NotNull
+    UUID locationId;
 
     @Version
-    private long version;
+    long version;
+
+    public Profile() {
+        // Intentionally left blank
+    }
+
+    public Profile(String id, Date createdAt, Date updatedAt, String displayName, String actualFullName,
+                   String profilePicturePath, LocalDate birthday, UUID genderId, UUID ethnicityId, UUID religionId,
+                   Double height, UUID figureTypeId, UUID maritalStatusId, String occupation, String aboutMe, UUID locationId) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.displayName = displayName;
+        this.actualFullName = actualFullName;
+        this.profilePicturePath = profilePicturePath;
+        this.birthday = birthday;
+        this.genderId = genderId;
+        this.ethnicityId = ethnicityId;
+        this.religionId = religionId;
+        this.height = height;
+        this.figureTypeId = figureTypeId;
+        this.maritalStatusId = maritalStatusId;
+        this.occupation = occupation;
+        this.aboutMe = aboutMe;
+        this.locationId = locationId;
+    }
 
     public String getId() {
         return id;

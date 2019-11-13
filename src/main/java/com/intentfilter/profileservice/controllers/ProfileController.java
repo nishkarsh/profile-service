@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
@@ -23,13 +25,13 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<Profile> create(@RequestBody Profile profile) {
+    public ResponseEntity<Profile> create(@RequestBody @Valid Profile profile) {
         final var createdProfile = service.create(profile);
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody Profile profile) {
+    public ResponseEntity<Void> update(@PathVariable("id") String id, @RequestBody @Valid Profile profile) {
         profile.setId(id);
         service.update(profile);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
