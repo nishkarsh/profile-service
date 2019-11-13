@@ -23,7 +23,7 @@ public class ProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<Profile> create(Profile profile) {
+    public ResponseEntity<Profile> create(@RequestBody Profile profile) {
         final var createdProfile = service.create(profile);
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
     }

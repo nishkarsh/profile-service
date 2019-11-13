@@ -21,8 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -75,6 +74,25 @@ class ProfileControllerIntegrationTest {
 
         final var persistedProfile = mongoTemplate.findById(createdProfileId, Profile.class);
         assertNotNull(persistedProfile);
+    }
+
+    @Test
+    void shouldGetProfileById(@Random Profile profile, @Random String profileId) throws Exception {
+        profile.setId(profileId);
+        MvcResult mvcResult = mockMvc.perform(post("/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(profile)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        final var createdProfileJson = ((ObjectNode) objectMapper.readTree(mvcResult.getResponse().getContentAsString()));
+
+        MvcResult fetchedProfile = mockMvc.perform(get("/profile/" + profileId))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final var fetchedProfileJson = ((ObjectNode) objectMapper.readTree(fetchedProfile.getResponse().getContentAsString()));
+        assertThat(fetchedProfileJson, is(createdProfileJson));
     }
 
     @AfterEach
