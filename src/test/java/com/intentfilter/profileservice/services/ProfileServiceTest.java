@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class, RandomBeansExtension.class})
@@ -29,5 +30,14 @@ class ProfileServiceTest {
         final var createdProfile = this.service.create(profile);
 
         assertThat(createdProfile, is(insertedProfile));
+    }
+
+    @Test
+    void shouldUpdateProfile(@Random Profile profile, @Mock Profile updatedProfile) {
+        when(this.repository.save(profile)).thenReturn(updatedProfile);
+
+        this.service.update(profile);
+
+        verify(this.repository).save(profile);
     }
 }
