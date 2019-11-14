@@ -59,7 +59,7 @@ public class Profile {
     String aboutMe;
 
     @NotNull
-    UUID locationId;
+    Location location;
 
     @Version
     long version;
@@ -70,7 +70,7 @@ public class Profile {
 
     public Profile(String id, Date createdAt, Date updatedAt, String displayName, String actualFullName,
                    String profilePicturePath, LocalDate birthday, UUID genderId, UUID ethnicityId, UUID religionId,
-                   Double height, UUID figureTypeId, UUID maritalStatusId, String occupation, String aboutMe, UUID locationId) {
+                   Double height, UUID figureTypeId, UUID maritalStatusId, String occupation, String aboutMe, Location location) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -86,7 +86,7 @@ public class Profile {
         this.maritalStatusId = maritalStatusId;
         this.occupation = occupation;
         this.aboutMe = aboutMe;
-        this.locationId = locationId;
+        this.location = location;
     }
 
     public String getId() {

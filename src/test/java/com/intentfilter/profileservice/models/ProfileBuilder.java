@@ -11,13 +11,14 @@ public class ProfileBuilder {
     private final Profile profile;
 
     private ProfileBuilder() {
-        final var id = new ObjectId().toHexString();
-        final var randomString = RandomStringUtils.random(244, "abcd");
         final var now = new Date();
+        final var id = new ObjectId().toHexString();
+        final var location = new Location("57°09'N", "2°07'W");
+        final var randomString = RandomStringUtils.random(244, "abcd");
 
         this.profile = new Profile(id, now, now, randomString, randomString, randomString,
                 LocalDate.now().minusYears(18), UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), 1.25,
-                UUID.randomUUID(), UUID.randomUUID(), randomString, randomString, UUID.randomUUID());
+                UUID.randomUUID(), UUID.randomUUID(), randomString, randomString, location);
     }
 
     public static ProfileBuilder withDefaults() {

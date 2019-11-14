@@ -1,6 +1,7 @@
 package com.intentfilter.profileservice.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intentfilter.profileservice.models.Location;
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.models.ProfileBuilder;
 import com.intentfilter.profileservice.services.ProfileService;
@@ -100,7 +101,7 @@ class ProfileControllerValidationTest {
     @Test
     void shouldReturnBadRequestIfLocationNotPresentInRequest() throws Exception {
         final var profile = ProfileBuilder.withDefaults().build();
-        FieldUtils.writeField(profile, "locationId", null, true);
+        FieldUtils.writeField(profile, "location", null, true);
 
         performRequestAndAssertBadRequest(profile);
     }
