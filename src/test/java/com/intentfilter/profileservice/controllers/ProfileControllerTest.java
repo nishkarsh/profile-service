@@ -1,6 +1,7 @@
 package com.intentfilter.profileservice.controllers;
 
 import com.intentfilter.profileservice.models.Profile;
+import com.intentfilter.profileservice.services.FileStorageService;
 import com.intentfilter.profileservice.services.ProfileService;
 import io.github.glytching.junit.extension.random.Random;
 import io.github.glytching.junit.extension.random.RandomBeansExtension;
@@ -12,7 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.nio.file.Paths;
 import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
@@ -23,6 +27,8 @@ import static org.mockito.Mockito.*;
 class ProfileControllerTest {
     @Mock
     private ProfileService profileService;
+    @Mock
+    private FileStorageService fileStorageService;
 
     @InjectMocks
     private ProfileController controller;
@@ -67,5 +73,17 @@ class ProfileControllerTest {
         verify(profileService, times(1)).update(captor.capture());
         Profile profileBeingUpdated = captor.getValue();
         assertThat(profileBeingUpdated.getId(), is(id));
+    }
+
+    @Test
+    void shouldStoreProfilePicture() {
+        final var file = new MockMultipartFile("mrkoo.jpg", "mrkoo.jpg", MediaType.IMAGE_JPEG_VALUE, "asmartyphoto".getBytes());
+        final var uploadPath = Paths.get("/users/profile/mrkoo.jpg");
+        when(this.fileStorageService.storeFile(file)).thenReturn(uploadPath);
+
+        final var responseEntity = this.controller.uploadPicture(file);
+
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(responseEntity.getBody(), is(uploadPath));
     }
 }
