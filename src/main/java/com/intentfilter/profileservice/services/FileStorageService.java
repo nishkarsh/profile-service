@@ -35,7 +35,7 @@ public class FileStorageService {
                 Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            return path;
+            return path.getFileName();
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file " + filename, e);
         }

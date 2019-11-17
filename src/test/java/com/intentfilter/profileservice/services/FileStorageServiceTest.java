@@ -6,7 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -21,5 +23,6 @@ class FileStorageServiceTest {
         final var path = service.storeFile(sample);
 
         assertNotNull(path);
+        assertThat(path.toString(), endsWith("sample.jpg"));
     }
 }
