@@ -1,5 +1,6 @@
 package com.intentfilter.profileservice.controllers;
 
+import com.intentfilter.profileservice.models.FilePath;
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.services.FileStorageService;
 import com.intentfilter.profileservice.services.ProfileService;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import java.nio.file.Paths;
 import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
@@ -78,7 +78,7 @@ class ProfileControllerTest {
     @Test
     void shouldStoreProfilePicture() {
         final var file = new MockMultipartFile("mrkoo.jpg", "mrkoo.jpg", MediaType.IMAGE_JPEG_VALUE, "asmartyphoto".getBytes());
-        final var uploadPath = Paths.get("/users/profile/mrkoo.jpg");
+        final var uploadPath = new FilePath("mrkoo.jpg");
         when(this.fileStorageService.storeFile(file)).thenReturn(uploadPath);
 
         final var responseEntity = this.controller.uploadPicture(file);

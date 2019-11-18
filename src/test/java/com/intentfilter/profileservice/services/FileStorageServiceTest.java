@@ -23,6 +23,6 @@ class FileStorageServiceTest {
         final var path = service.storeFile(sample);
 
         assertNotNull(path);
-        assertThat(path.toString(), endsWith("sample.jpg"));
+        assertThat(path.getFileName(), endsWith("sample.jpg"));
     }
 }

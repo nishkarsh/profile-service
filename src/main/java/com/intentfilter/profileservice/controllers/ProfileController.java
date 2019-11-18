@@ -1,5 +1,6 @@
 package com.intentfilter.profileservice.controllers;
 
+import com.intentfilter.profileservice.models.FilePath;
 import com.intentfilter.profileservice.models.Profile;
 import com.intentfilter.profileservice.services.FileStorageService;
 import com.intentfilter.profileservice.services.ProfileService;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/profile")
@@ -43,7 +43,7 @@ public class ProfileController {
     }
 
     @PostMapping("/picture")
-    public ResponseEntity<Path> uploadPicture(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FilePath> uploadPicture(@RequestParam("file") MultipartFile file) {
         return new ResponseEntity<>(fileStorageService.storeFile(file), HttpStatus.CREATED);
     }
 }
